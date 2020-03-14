@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug",
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "program": "${workspaceFolder}/build/main/index.js",
+      "args": [
+        "--no-timeouts",
+        "--colors",
+        "${file}",
+        "--require",
+        "ts-node/register"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/build/**/*.js"
+      ]
+    }
+  ]
+}
