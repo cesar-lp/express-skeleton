@@ -1,0 +1,39 @@
+{
+  "name": "express-skeleton",
+  "version": "0.1.0",
+  "description": "Express skeleton.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env ENVIRONMENT=development && nodemon",
+    "prod": "cross-env ENVIRONMENT=production && npm run build && node build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesar-lp/express-skeleton.git"
+  },
+  "keywords": [
+    "express",
+    "express-skeleton",
+    "express-template"
+  ],
+  "author": "Cesar L. Palacios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cesar-lp/express-skeleton/issues"
+  },
+  "homepage": "https://github.com/cesar-lp/express-skeleton#readme",
+  "dependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^13.9.1",
+    "cross-env": "^7.0.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  }
+}
