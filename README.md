@@ -5,8 +5,7 @@ This is an express project already configured for the majority of use cases so y
 
 ### Features
 - Typescript
-- [ ] Prettier
-- [ ] ESLint
+- Prettier & ESLint
 - [ ] Structure
 - [ ] Logging
 - [ ] Middlewares
