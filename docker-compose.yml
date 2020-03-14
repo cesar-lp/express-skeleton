@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  express_template:
+    container_name: express-template
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "4000:${APP_PORT}"

@@ -1,13 +1,17 @@
-import express, { json, Request, Response } from 'express';
-import personController from './controller/person.controller';
-import { handleError } from './exception/error.handler';
+import { PersonRepositoryImpl } from './repository/person.repository';
+import { PersonServiceImpl } from './services/person.service';
+import Application from './app/application';
+import { PersonController } from './controllers/person.controller';
+import * as configuration from './config/application.config';
 
-const app = express();
-const port = 3000;
+export let app: Application;
 
-app.use(json());
-app.use('/people', personController);
+const controllers = [new PersonController(new PersonServiceImpl(new PersonRepositoryImpl()))];
 
-app.use((error: Error, req: Request, res: Response) => handleError(error, req, res));
+const startServer = async () => {
+  const config = await configuration.load();
+  app = new Application(controllers, config);
+  return app.listen();
+};
 
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+startServer();

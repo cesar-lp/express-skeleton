@@ -1,27 +1,25 @@
-import { Request, Response, NextFunction } from 'express';
-import { validationResult, ValidationError } from 'express-validator';
-import { Exception, ServiceException, FieldError, InvalidEntityException } from './error.model';
+import { Request, Response } from 'express';
+import { ServiceException, ServiceError, ValidationException } from './error.model';
+import logger from '../utils/logging.utils';
+import { extractRequestUrl } from '../utils/http.utils';
 
-export const handleError = (err: Error, _req: Request, res: Response) => {
-  const error = err as ServiceException;
-  const statusCode = error.statusCode || 400;
-  const response = new Exception(statusCode, error.message);
-  return res.status(statusCode).json(response);
-};
+export const handleError = (err: Error | ValidationException, req: Request, res: Response) => {
+  const errorName = Object.getPrototypeOf(err).constructor.name;
+  logger.error(err.message);
 
-export const validate = (req: Request, res: Response, next: NextFunction) => {
-  const errors = validationResult(req);
-
-  if (errors.isEmpty()) {
-    return next();
+  switch (errorName) {
+    case 'ServiceError':
+      const error = err as ServiceError;
+      const serviceExc = new ServiceException(error.statusCode, error.message, extractRequestUrl(req));
+      res.status(serviceExc.statusCode).send(serviceExc);
+      break;
+    case 'ValidationException':
+      const valExc = err as ValidationException;
+      res.status(valExc.statusCode).send(valExc);
+      break;
+    default:
+      const exc = new ServiceException(500, err.message, extractRequestUrl(req));
+      res.status(500).send(exc);
+      break;
   }
-
-  const requestUrl = req.baseUrl + (req.path !== '/' ? req.path : '');
-  const fieldErrors: FieldError[] = [];
-
-  errors.array().map((err: ValidationError) => {
-    fieldErrors.push(new FieldError(err.param, err.msg, err.value));
-  });
-
-  return res.status(422).json(new InvalidEntityException(fieldErrors, requestUrl));
 };

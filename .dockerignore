@@ -1,0 +1,9 @@
+node_modules
+build
+LICENSE
+README.md
+.vscode
+.eslintignore
+.eslintrc
+.prettierrc.json
+.gitignore
